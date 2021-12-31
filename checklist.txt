@@ -1,0 +1,8 @@
+Discovery
+Commands (on, off, toggle)
+CLI
+Notifications
+Refator Commands (color, flow, hue, brightness, saturation, speed, duration)
+Ios build
+Android build
+support for multiple devices
