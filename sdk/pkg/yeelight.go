@@ -13,7 +13,6 @@ import (
 
 const (
 	srvAddr         = "239.255.255.250:1982"
-	maxDatagramSize = 8192
 )
 
 type Yeelight struct {
