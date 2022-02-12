@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 Gabriel Vieira Figueiredo Tomaz <gabrielvf.tomaz@gmail.com>
 
 */
 package main

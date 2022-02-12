@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net"
 	"strings"
@@ -12,19 +11,19 @@ import (
 )
 
 const (
-	srvAddr         = "239.255.255.250:1982"
+	srvAddr = "239.255.255.250:1982"
 )
 
 type Yeelight struct {
-	id      string
-	name    string
-	addr    string
-	model   string
-	support []string
+	Id      string   `json:"id"`
+	Name    string   `json:"name"`
+	Addr    string   `json:"addr"`
+	Model   string   `json:"model"`
+	Support []string `json:"support"`
 }
 
 func New(id string, name string, addr string, model string, support []string) Yeelight {
-	return Yeelight{id: id, name: name, addr: addr, model: model, support: support}
+	return Yeelight{Id: id, Name: name, Addr: addr, Model: model, Support: support}
 }
 
 type Command struct {
@@ -65,8 +64,8 @@ func Discover() Yeelight {
 	}
 
 	stringResp := string(b[0:size])
-
-	return parseDiscoveyResponse(stringResp)
+	parsed := parseDiscoveyResponse(stringResp)
+	return parsed
 }
 
 func getLocalIP() (net.IP, error) {
@@ -141,18 +140,17 @@ func parseDiscoveyResponse(s string) Yeelight {
 	suppArr := strings.Split(dict["support"], " ")
 
 	return Yeelight{
-		id:      dict["id"],
-		name:    dict["id"],
-		addr:    locArr[1],
-		model:   dict["model"],
-		support: suppArr,
+		Id:      dict["id"],
+		Name:    dict["id"],
+		Addr:    locArr[1],
+		Model:   dict["model"],
+		Support: suppArr,
 	}
-
 }
 
 func (y Yeelight) sendCommand(c Command) {
 
-	conn, err := net.Dial("tcp", y.addr)
+	conn, err := net.Dial("tcp", y.Addr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -170,18 +168,14 @@ func (y Yeelight) sendCommand(c Command) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(string(jsonStr))
 }
 
-func (y Yeelight) GetInfo() {
-
-	b, err := json.MarshalIndent(y, "", "  ")
+func (y Yeelight) String() string {
+	b, err := json.Marshal(y)
 	if err != nil {
-		log.Fatal(err)
+		return "error"
 	}
-	fmt.Print(string(b))
-
+	return string(b)
 }
 
 func (y Yeelight) SetPower(state bool) {
